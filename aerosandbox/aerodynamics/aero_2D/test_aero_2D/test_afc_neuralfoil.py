@@ -58,6 +58,27 @@ def test_afc_confidence_decreases_outside_nominal_domain():
     assert out_of_domain["stall_risk"][0] >= nominal["stall_risk"][0]
 
 
+def test_afc_confidence_is_stable_with_numpy_fp_exceptions_enabled():
+    airfoil = asb.Airfoil("naca0012")
+    old_err = np.geterr()
+    np.seterr(all="raise")
+    try:
+        out_of_domain = airfoil.get_aero_from_afc_neuralfoil(
+            alpha=80.0,
+            Re=1e6,
+            mach=0.05,
+            C_mu=0.50,
+            x_jet=0.1,
+            theta_jet=30.0,
+            model_size="xsmall",
+        )
+    finally:
+        np.seterr(**old_err)
+
+    assert np.all(np.isfinite(out_of_domain["analysis_confidence"]))
+    assert out_of_domain["analysis_confidence"][0] <= 1.0
+
+
 def test_afc_training_distance_ood_score_from_statistics():
     df = asb.make_fake_afc_dataset(n_cases=20, random_seed=13)
     stats = asb.make_afc_training_statistics(df)
