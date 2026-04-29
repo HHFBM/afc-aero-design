@@ -822,8 +822,19 @@ class Airfoil(Polygon):
         aero["CL"] = CL_baseline + dCL_afc
         aero["CD"] = CD_baseline * np.exp(dlogCD_afc)
         aero["CM"] = CM_baseline + dCM_afc
-        raw_analysis_confidence = analysis_confidence_baseline * np.exp(
-            -2.0 * afc_effectiveness
+        # Keep the no-AFC path exactly equal to the baseline output, but evaluate the decayed-confidence branch in
+        # log-space so NumPy underflow warnings do not become hard failures when tests enable `seterr(all="raise")`.
+        raw_analysis_confidence = np.where(
+            np.fabs(C_mu) <= 0,
+            analysis_confidence_baseline,
+            np.exp(
+                np.clip(
+                    np.log(np.maximum(analysis_confidence_baseline, 1e-300))
+                    - 2.0 * afc_effectiveness,
+                    -700,
+                    0,
+                )
+            ),
         )
         aero["analysis_confidence"] = raw_analysis_confidence
 
