@@ -1,0 +1,23 @@
+{
+  "name": "lightweight_afc_ci_benchmark",
+  "description": "Small deterministic AFC validation case for CI and regression tests. This is not a CFD validation dataset.",
+  "airfoil": "naca0012",
+  "alpha_deg": 5.0,
+  "velocity_mps": 25.0,
+  "mach": 0.05,
+  "reynolds": 1000000.0,
+  "spanwise_resolution": 2,
+  "model_size": "xsmall",
+  "c_mu_sweep": [0.0, 0.01, 0.02],
+  "x_jet": 0.1,
+  "theta_jet": 30.0,
+  "checks": [
+    "C_mu=0 AFC-NeuralFoil equals NeuralFoil",
+    "2D surrogate errors are computable on canonical data",
+    "3D C_mu=0 equals AeroSandbox LiftingLine",
+    "3D CL increases reasonably with C_mu and CD/CM are continuous",
+    "A small Opti problem with AFC variables converges"
+  ],
+  "external_validation_data_policy": "Large CFD/RANS/experimental datasets should be stored outside this repository and passed to the validation report script by path."
+}
+

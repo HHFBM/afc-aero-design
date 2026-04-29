@@ -1,0 +1,18 @@
+afc_config_version: 1
+config_type: afc_system
+network:
+  name: wing_steady_jet_afc_system
+operating_condition:
+  freestream_velocity: 55.0
+  S_ref: 12.0
+  density_inf: 1.225
+  ambient_pressure: 101325.0
+  ambient_temperature: 288.15
+sizing:
+  mode: design
+  target_C_mu: 0.005
+  jet_velocity: 130.0
+components: [{"type": "inlet", "name": "inlet", "area": 0.018, "loss_coefficient": 0.20, "pressure_recovery": 0.98}, {"type": "compressor", "name": "compressor", "pressure_ratio": 1.8, "isentropic_efficiency": 0.72, "motor_efficiency": 0.90, "fixed_weight": 4.0, "fixed_volume": 0.018}, {"type": "duct", "name": "main_duct", "length": 2.5, "hydraulic_diameter": 0.08, "friction_factor": 0.025, "wall_thickness": 0.001}, {"type": "bend", "name": "wing_root_bend", "hydraulic_diameter": 0.08, "angle_degrees": 90.0, "loss_coefficient_90deg": 0.45}, {"type": "valve", "name": "control_valve", "hydraulic_diameter": 0.08, "loss_coefficient": 2.0, "opening_fraction": 0.85, "fixed_weight": 0.5, "fixed_volume": 0.002}, {"type": "plenum", "name": "wing_plenum", "volume": 0.018, "reference_area": 0.02, "loss_coefficient": 0.05}, {"type": "actuator", "name": "steady_slot_actuator", "jet_area": 0.003, "discharge_coefficient": 0.85, "jet_velocity_ratio": 2.2, "fixed_weight": 0.4, "fixed_volume": 0.001}]
+notes:
+  model_fidelity: "First-pass FR-SYS placeholder. Trends only; not a high-fidelity pneumatic design model."
+  C_mu_convention: "C_mu = mdot * V_jet / (q_inf * S_ref). For 2D use unit-span S_ref = chord * 1 m."

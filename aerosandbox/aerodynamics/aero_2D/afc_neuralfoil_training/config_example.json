@@ -1,0 +1,35 @@
+{
+  "data_path": "examples/generated_afc_dataset/afc_airfoil_synthetic.csv",
+  "output_directory": "runs/afc_neuralfoil/small_debug",
+  "model_size": "small",
+  "hidden_width": 32,
+  "hidden_depth": 2,
+  "baseline_model_size": "large",
+  "overwrite_baseline_columns": false,
+  "batch_size": 256,
+  "epochs": 50,
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "optimizer": "adamw",
+  "train_fraction": 0.8,
+  "val_fraction": 0.1,
+  "test_fraction": 0.1,
+  "random_seed": 0,
+  "num_workers": 0,
+  "device": "auto",
+  "early_stopping_patience": 10,
+  "early_stopping_min_delta": 0.00001,
+  "lr_plateau_patience": 4,
+  "lr_plateau_factor": 0.5,
+  "min_gate_for_output_norm": 0.1,
+  "loss_weights": {
+    "CL": 1.0,
+    "logCD": 1.0,
+    "CM": 0.5,
+    "Top_Xtr": 0.05,
+    "Bot_Xtr": 0.05,
+    "confidence": 0.1
+  },
+  "export_best_npz": true
+}
+

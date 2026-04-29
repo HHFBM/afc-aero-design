@@ -1,0 +1,48 @@
+# AFC-NeuralFoil model and training configuration example.
+afc_config_version: 1
+config_type: model
+
+model:
+  family: AFC-NeuralFoil
+  model_size: large
+  supported_model_sizes: ["small", "medium", "large"]
+  weights_directory: aerosandbox/aerodynamics/aero_2D/afc_neuralfoil_weights
+  baseline_model_size: large
+  zero_afc_behavior: baseline_correction
+  current_status: "Interface is implemented; production accuracy depends on trained weights and validation data."
+
+architecture_defaults:
+  small: {"hidden_width": 32, "hidden_depth": 2}
+  medium: {"hidden_width": 64, "hidden_depth": 3}
+  large: {"hidden_width": 128, "hidden_depth": 4}
+  activation: swish
+
+inputs:
+  encoded_feature_count: 30
+  geometry: ["kulfan_upper_weights_0..7", "kulfan_lower_weights_0..7", "leading_edge_weight", "TE_thickness"]
+  flow: ["alpha", "Re", "Mach", "n_crit", "xtr_upper", "xtr_lower"]
+  afc: ["C_mu", "x_jet", "theta_jet"]
+  encoding: {"alpha": "sin/cos periodic", "Re": "log", "theta_jet": "sin/cos periodic"}
+
+outputs:
+  code_fields: ["CL", "CD", "CM", "Top_Xtr", "Bot_Xtr", "analysis_confidence"]
+  section_aliases: {"CL": "cl", "CD": "cd", "CM": "cm"}
+  decoding: {"CD": "log-space correction", "CL": "baseline plus gated correction", "CM": "baseline plus gated correction"}
+
+training:
+  script: aerosandbox/aerodynamics/aero_2D/afc_neuralfoil_training/train_afc_neuralfoil.py
+  data_path: external_data/flowcontrollab/converted/fcl_naca0018_quasi_steady_afc_schema_with_baseline.csv
+  output_directory: runs/afc_neuralfoil/fcl_naca0018_quasi_steady_large
+  batch_size: 256
+  epochs: 80
+  optimizer: adamw
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  early_stopping_patience: 10
+  loss_terms: ["Huber(CL)", "Huber(logCD)", "Huber(CM)", "Huber(Top_Xtr)", "Huber(Bot_Xtr)", "BCE(confidence_label)"]
+
+export:
+  format: npz
+  key_style: neuralfoil
+  exported_weight_example: runs/afc_neuralfoil/fcl_naca0018_quasi_steady_large/exported_weights/nn-large.npz
+

@@ -1,0 +1,30 @@
+name: AFC Lightweight Validation
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  afc-validation:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10']
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+      - name: Run AFC pytest validation
+        run: |
+          uv run --python ${{ matrix.python-version }} --extra test pytest aerosandbox/aerodynamics/test_aerodynamics/test_afc_validation.py
+      - name: Generate AFC validation report
+        run: |
+          uv run --python ${{ matrix.python-version }} --extra test python examples/afc_validation_report.py --output-directory validation_outputs/afc_ci
+

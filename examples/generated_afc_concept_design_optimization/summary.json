@@ -1,0 +1,93 @@
+{
+  "status": "solved",
+  "failure_reason": null,
+  "assumptions": [
+    "AFC aerodynamic correction is the current smooth placeholder AFC-NeuralFoil interface.",
+    "SWaP is a first-pass placeholder model using steady pressure-loss and ideal-gas compressor estimates.",
+    "System target C_mu is the mean of the spanwise C_mu design segments."
+  ],
+  "design_variables": {
+    "tip_chord": "optimized",
+    "half_span": "optimized",
+    "twist_tip": "optimized",
+    "C_mu_segments": 4.0,
+    "jet_velocity_ratio": "optimized_placeholder_system_variable"
+  },
+  "constraints": {
+    "target_CL": 0.8,
+    "span_limit": 6.0,
+    "root_bending_limit": 1250.0,
+    "analysis_confidence_min": 0.3,
+    "power_limit": 12000.0,
+    "weight_limit": 15.0
+  },
+  "initial": {
+    "label": "Initial",
+    "tip_chord": 0.72,
+    "half_span": 2.55,
+    "full_span": 5.1,
+    "aspect_ratio": 5.930232558139536,
+    "twist_tip": -2.0,
+    "C_mu_segments": [
+      0.004,
+      0.006,
+      0.008,
+      0.01
+    ],
+    "mean_C_mu": 0.007000000000000001,
+    "jet_velocity_ratio": 2.2,
+    "CL": 0.7200912604865259,
+    "CD_total": 0.031309728392636314,
+    "CDi": 0.025028096294294373,
+    "CDp": 0.006281632098341941,
+    "CM": -0.12730040353729152,
+    "converged": true,
+    "failure_reason": null,
+    "root_bending_moment": 977.6362264734944,
+    "min_analysis_confidence": 0.6914126832470516,
+    "required_power": 3134.8134526743215,
+    "system_weight": 7.634259454992185,
+    "system_volume": 0.053196732093206425,
+    "mass_flow": 0.2564313005731691,
+    "jet_velocity": 66.0,
+    "objective": 0.04139648502548105
+  },
+  "optimized": {
+    "label": "Optimized",
+    "tip_chord": 0.3999999932246212,
+    "half_span": 2.9999998623980964,
+    "full_span": 5.999999724796193,
+    "aspect_ratio": 8.571428219762184,
+    "twist_tip": 0.9267796624894079,
+    "C_mu_segments": [
+      0.0,
+      0.0017811132489969385,
+      0.0,
+      0.0
+    ],
+    "mean_C_mu": 0.0004452783122492346,
+    "jet_velocity_ratio": 1.6863689568124691,
+    "CL": 0.7999999899001254,
+    "CD_total": 0.027922563398426515,
+    "CDi": 0.02136779768853619,
+    "CDp": 0.006554765709890332,
+    "CM": -0.11103140726637564,
+    "converged": true,
+    "failure_reason": null,
+    "root_bending_moment": 1250.0000109712087,
+    "min_analysis_confidence": 0.8881350456635843,
+    "required_power": 108.97159161844488,
+    "system_weight": 7.634259454992185,
+    "system_volume": 0.053196732093206425,
+    "mass_flow": 0.02037771007414296,
+    "jet_velocity": 50.591068704374074,
+    "objective": 0.031957636309159494
+  },
+  "outputs": {
+    "comparison_table": "/Users/jason/Documents/AeroSandbox-master/examples/generated_afc_concept_design_optimization/comparison_table.csv",
+    "spanwise_c_mu_plot": "/Users/jason/Documents/AeroSandbox-master/examples/generated_afc_concept_design_optimization/spanwise_c_mu.png",
+    "spanwise_load_plot": "/Users/jason/Documents/AeroSandbox-master/examples/generated_afc_concept_design_optimization/spanwise_load.png",
+    "section_cl_cd_plot": "/Users/jason/Documents/AeroSandbox-master/examples/generated_afc_concept_design_optimization/section_cl_cd.png",
+    "swap_breakdown_plot": "/Users/jason/Documents/AeroSandbox-master/examples/generated_afc_concept_design_optimization/swap_breakdown_placeholder.png"
+  }
+}

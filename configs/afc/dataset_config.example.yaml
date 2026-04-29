@@ -1,0 +1,72 @@
+# AFC 2D dataset configuration example.
+afc_config_version: 1
+config_type: dataset
+
+schema:
+  name: afc_2d_surrogate_v1
+  canonical_module: aerosandbox.aerodynamics.aero_2D.afc_dataset
+  preferred_format: parquet
+  fallback_format: csv
+  two_d_coefficient_note: "Current code stores 2D section coefficients as CL/CD/CM for NeuralFoil compatibility; documents may refer to them as cl/cd/cm."
+
+naming:
+  two_d_section_lift: cl
+  two_d_section_drag: cd
+  two_d_section_moment: cm
+  code_2d_lift_field: CL
+  code_2d_drag_field: CD
+  code_2d_moment_field: CM
+  three_d_lift: CL
+  three_d_drag: CD
+  three_d_moment: CM
+  afc_inputs: ["C_mu", "x_jet", "theta_jet"]
+
+units:
+  kulfan_upper_weights: nondimensional
+  kulfan_lower_weights: nondimensional
+  leading_edge_weight: nondimensional
+  TE_thickness: chord_fraction
+  alpha: deg
+  Re: nondimensional
+  Mach: nondimensional
+  n_crit: nondimensional
+  xtr_upper: chord_fraction
+  xtr_lower: chord_fraction
+  C_mu: nondimensional
+  x_jet: chord_fraction
+  theta_jet: deg
+  CL: nondimensional_2d_section_cl
+  CD: nondimensional_2d_section_cd
+  CM: nondimensional_2d_section_cm
+  Top_Xtr: chord_fraction
+  Bot_Xtr: chord_fraction
+  confidence_label: nondimensional_0_to_1
+
+columns:
+  geometry: ["kulfan_upper_weights_0", "kulfan_upper_weights_1", "kulfan_upper_weights_2", "kulfan_upper_weights_3", "kulfan_upper_weights_4", "kulfan_upper_weights_5", "kulfan_upper_weights_6", "kulfan_upper_weights_7", "kulfan_lower_weights_0", "kulfan_lower_weights_1", "kulfan_lower_weights_2", "kulfan_lower_weights_3", "kulfan_lower_weights_4", "kulfan_lower_weights_5", "kulfan_lower_weights_6", "kulfan_lower_weights_7", "leading_edge_weight", "TE_thickness"]
+  conditions: ["alpha", "Re", "Mach", "n_crit", "xtr_upper", "xtr_lower"]
+  afc: ["C_mu", "x_jet", "theta_jet"]
+  outputs: ["CL", "CD", "CM", "Top_Xtr", "Bot_Xtr"]
+  metadata: ["converged", "source", "confidence_label"]
+
+dataset:
+  path: examples/generated_afc_dataset/afc_airfoil_synthetic.csv
+  manifest_path: examples/generated_afc_dataset/manifest.json
+  source_policy: "Use external paths for large CFD/RANS/experimental data; do not commit large raw data."
+  external_data_root: external_data
+
+split:
+  train_fraction: 0.8
+  val_fraction: 0.1
+  test_fraction: 0.1
+  random_seed: 0
+  shuffle: true
+
+range_checks:
+  alpha: [-180.0, 180.0]
+  Re: [1000.0, 1000000000.0]
+  Mach: [0.0, 5.0]
+  C_mu: [0.0, 1.0]
+  x_jet: [0.0, 1.0]
+  theta_jet: [-180.0, 180.0]
+

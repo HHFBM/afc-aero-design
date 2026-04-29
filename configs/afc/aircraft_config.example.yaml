@@ -1,0 +1,44 @@
+# 3D aircraft and AFC finite-wing analysis configuration example.
+afc_config_version: 1
+config_type: aircraft
+
+airplane:
+  name: AFC Concept Wing
+  reference:
+    s_ref: 5.0
+    c_ref: 0.8
+    b_ref: 6.25
+    xyz_ref: [0.25, 0.0, 0.0]
+  wing:
+    name: Main Wing
+    symmetric: true
+    root: {"xyz_le": [0.0, 0.0, 0.0], "chord": 1.0, "twist": 0.0, "airfoil": "naca4412"}
+    tip: {"xyz_le": [0.15, 3.125, 0.0], "chord": 0.6, "twist": -2.0, "airfoil": "naca4412"}
+
+operating_point:
+  velocity: 30.0
+  velocity_units: m_per_s
+  alpha: 4.0
+  alpha_units: deg
+  beta: 0.0
+  beta_units: deg
+
+analysis:
+  solver: AFCNeuralFoilLiftingLine
+  alternatives: ["AFCNeuralFoilNonlinearLiftingLine", "NeuralFoilCamberedVLM"]
+  spanwise_resolution: 8
+  chordwise_resolution: 4
+  model_size: large
+  include_360_deg_effects: true
+
+afc:
+  C_mu: [0.0, 0.02, 0.02, 0.0]
+  x_jet: 0.1
+  theta_jet: 30.0
+  distribution_note: "Scalar values broadcast to all spanwise stations; arrays are interpolated over semispan."
+
+outputs:
+  totals: ["CL", "CD", "CDi", "CDp", "CM", "CY", "Cl", "Cn"]
+  spanwise: ["spanwise_y", "local_alpha", "local_Re", "local_C_mu", "section_CL", "section_CD", "section_CM", "analysis_confidence"]
+  postprocess: ["root_bending_moment", "spanwise_load", "local_stall_indicator", "afc_power_proxy"]
+

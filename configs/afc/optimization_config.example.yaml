@@ -1,0 +1,37 @@
+# AFC finite-wing optimization configuration example.
+afc_config_version: 1
+config_type: optimization
+
+problem:
+  name: afc_wing_distribution_optimization
+  optimizer: asb.Opti
+  analysis_solver: AFCNeuralFoilLiftingLine
+  objective_form: "CD_total + lambda_afc * mean(C_mu_segments^2)"
+  swap_status: "SWaP physical model is not implemented in this stage; current AFC cost is a proxy."
+
+design_variables:
+  tip_chord: {"initial": 0.7, "lower": 0.35, "upper": 1.2, "units": "m"}
+  half_span: {"initial": 2.5, "lower": 1.8, "upper": 3.5, "units": "m"}
+  twist_tip: {"initial": -2.0, "lower": -8.0, "upper": 4.0, "units": "deg"}
+  C_mu_segments: {"initial": [0.01, 0.01, 0.01, 0.01], "lower": 0.0, "upper": 0.1, "units": "nondimensional"}
+
+constants:
+  root_chord: 1.0
+  velocity: 30.0
+  alpha: 4.0
+  n_afc_segments: 4
+  spanwise_resolution: 4
+  model_size: xxsmall
+  lambda_afc: 0.03
+
+constraints:
+  CL_min: 0.7
+  full_span_max: 7.0
+  root_bending_moment_max: 1150.0
+  analysis_confidence_min: 0.5
+  fixed_airfoil_thickness_min: 0.1
+
+outputs:
+  summary_fields: ["tip_chord", "half_span", "twist_tip", "C_mu_segments", "CL", "CD", "CDi", "CDp", "root_bending_moment", "analysis_confidence_min"]
+  plots: ["spanwise_C_mu", "spanwise_load", "section_CL", "section_CD"]
+
