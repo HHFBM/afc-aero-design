@@ -30,4 +30,14 @@ jobs:
           uv run --python ${{ matrix.python-version }} --extra test pytest aerosandbox
       - name: Test with pytest (with extras; only tutorials)
         run: |
+          if [ ! -d tutorial ]; then
+            echo "tutorial/ is not present in this checkout; skipping notebook tests."
+            exit 0
+          fi
+
+          if ! find tutorial -type f \( -name '*.ipynb' -o -name 'test_*.py' \) | grep -q .; then
+            echo "tutorial/ contains no notebook or tutorial test files; skipping."
+            exit 0
+          fi
+
           uv run --python ${{ matrix.python-version }} --extra test --extra full pytest tutorial --nbval-lax --nbval-cell-timeout 120
